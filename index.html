@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TikTok 搜索流工坊</title>
+  <style>
+    :root{--bg:#10100f;--panel:#191917;--line:#393934;--text:#f8f7f1;--muted:#aaa99f;--coral:#ff6359;--mint:#61d69b;--yellow:#f4cf62}
+    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font:14px/1.55 Inter,system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif}
+    .wrap{max-width:1220px;margin:auto;padding:30px 22px 70px}.top{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:28px}.eyebrow{color:var(--mint);font-weight:700;letter-spacing:0;font-size:12px}.title{font-size:clamp(28px,4vw,46px);line-height:1.1;margin:7px 0 10px;letter-spacing:0}.sub{color:var(--muted);max-width:680px;margin:0}.badge{background:#22221f;border:1px solid #44443e;border-radius:99px;padding:8px 13px;color:#f0efe6;white-space:nowrap}.grid{display:grid;grid-template-columns:360px 1fr;gap:22px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 20px 55px rgba(0,0,0,.2)}.results-panel{padding:2px 0}.panel h2,.results-panel h2{font-size:16px;margin:0 0 14px}.field{margin:0 0 14px}.field label{display:block;color:#d4d3ca;font-size:12px;margin-bottom:6px;font-weight:700}.field input,.field textarea,.field select{width:100%;background:#11110f;border:1px solid #41413b;border-radius:6px;color:var(--text);padding:11px 12px;outline:none;font:inherit}.field textarea{resize:vertical;min-height:92px}.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--mint);box-shadow:0 0 0 3px #61d69b18}.account-list{display:flex;flex-wrap:wrap;gap:7px}.account{cursor:pointer;border:1px solid #45453e;background:#121210;color:#c3c2b8;border-radius:6px;padding:7px 9px;font-size:12px}.account.active{background:#254536;border-color:var(--mint);color:#fff}.account small{display:block;color:#8d8c82;font-size:10px}.checks{display:flex;flex-wrap:wrap;gap:8px}.checks label{font-size:12px;color:#d0cfc5;background:#121210;border:1px solid #3a3a35;padding:6px 8px;border-radius:6px}.checks input{accent-color:var(--coral)}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.btn{cursor:pointer;border:0;border-radius:6px;padding:10px 13px;font-weight:800;color:#102219;background:var(--mint)}.btn.secondary{background:#30302c;color:#f0efe9}.btn.pink{background:var(--coral);color:white}.result-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:13px}.result-head h2{margin:0}.result-head span{color:var(--muted);font-size:12px}.cards{display:grid;gap:13px}.card{border:1px solid #3b3b36;background:#181816;border-radius:8px;padding:15px}.card-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.account-name{font-weight:800;font-size:16px}.tool{color:var(--yellow);font-size:11px;margin-top:2px}.mini-actions{display:flex;gap:6px}.mini{border:1px solid #4b4b44;background:#282824;color:#f1f0e8;border-radius:6px;padding:6px 8px;cursor:pointer;font-size:11px}.section{margin-top:13px}.section-title{color:#aaa99f;font-size:11px;text-transform:uppercase;letter-spacing:0;margin-bottom:5px}.copybox{white-space:pre-wrap;background:#10100e;border:1px solid #30302c;border-radius:6px;padding:11px;color:#f0efe8;max-height:220px;overflow:auto}.pill{border-radius:99px;padding:4px 8px;background:#33332e;color:#dddcd2;font-size:11px}.pill.good{background:#17392a;color:#75e4ac}.empty{border:1px dashed #494942;border-radius:8px;padding:34px;text-align:center;color:var(--muted)}.history{margin-top:18px}.history-row{display:flex;justify-content:space-between;gap:10px;border-top:1px solid #363631;padding:9px 0;color:#c8c7bd;font-size:12px}.toast{position:fixed;right:20px;bottom:20px;background:#ecfdf5;color:#092c1d;border:1px solid #65e6a6;padding:10px 14px;border-radius:6px;box-shadow:0 10px 30px #0008;display:none;font-weight:700}.toast.show{display:block}
+    .account-list{display:grid;gap:7px}.account-row{display:flex;gap:6px}.account-row .account{flex:1;text-align:left}.icon-btn{width:34px;border:1px solid #45453e;background:#242420;color:#d8d7ce;border-radius:6px;cursor:pointer;font-size:18px}.icon-btn:hover{border-color:var(--coral);color:#fff}.account-admin{border-top:1px solid #363631;margin-top:12px;padding-top:12px}.account-form{display:grid;grid-template-columns:1fr 1fr;gap:7px}.account-form input,.account-form select{min-width:0;background:#11110f;border:1px solid #41413b;border-radius:6px;color:var(--text);padding:8px;font:inherit;font-size:12px}.account-form .wide{grid-column:1/-1}.account-note{color:#8d8c82;font-size:11px;margin:8px 0 0}.btn.small{padding:7px 10px;font-size:11px}
+    @media(max-width:850px){.grid{grid-template-columns:1fr}.top{display:block}.badge{display:inline-block;margin-top:15px}}
+  </style>
+</head>
+<body>
+<main class="wrap">
+  <header class="top"><div><div class="eyebrow">SEARCH FLOW STUDIO · LOCAL FIRST</div><h1 class="title">TikTok 爆款关键词搜索流</h1><p class="sub">把一个热点拆成多个账号可直接发布的差异化关键词包：搜索词、钩子、去重清单、配音和置顶评论一次生成。</p></div><div class="badge">账号数据只保存在本机</div></header>
+  <div class="grid">
+    <aside class="panel">
+      <h2>生成配置</h2>
+      <div class="field"><label>热点 / 主题</label><input id="topic" value="Head Bop Animation" placeholder="例如：Chrome Flow Photo Effect" /></div>
+      <div class="field"><label>人物 / IP（可选）</label><input id="ip" value="iShowSpeed" placeholder="例如：Batman、Ava、Lamborghini" /></div>
+      <div class="field"><label>参考关键词（每行一个）</label><textarea id="refs">tutorial on head bop animation
+how to do head bop animation
+head bop tutorial capcut
+ishowspeed head bop edit
+head bop animation capcut tutorial
+how to make head bop animation in capcut</textarea></div>
+      <div class="field"><label>账号（点击选择）</label><div id="accounts" class="account-list empty">请先新增账号</div>
+        <div class="account-admin"><div class="account-form"><input id="newAccountId" maxlength="12" placeholder="账号 ID，如 A1" /><input id="newAccountName" placeholder="显示名称" /><select id="newAccountTool"><option>CapCut</option><option>Kling AI</option></select><input id="newAccountTime" class="wide" placeholder="发布时间，如北京时间 07:30" /></div><div class="actions"><button class="btn small" id="addAccount">＋ 新增账号</button><button class="btn secondary small" id="clearAccounts">清空账号</button></div><p class="account-note">账号只保存在当前浏览器，不上传服务器。每位同事维护自己的列表。</p></div>
+      </div>
+      <div class="field"><label>强制覆盖词</label><div class="checks"><label><input id="multi" type="checkbox" checked /> 多语言变体</label><label><input id="mustTool" type="checkbox" checked /> 工具词</label><label><input id="hashtags" type="checkbox" checked /> 5 个标签</label></div></div>
+      <div class="actions"><button class="btn pink" id="generate">生成搜索流</button><button class="btn secondary" id="all">全选账号</button><button class="btn secondary" id="clear">清空结果</button></div>
+      <div class="history"><h2>最近生成</h2><div id="historyList" class="empty">暂无记录</div></div>
+    </aside>
+    <section class="results-panel"><div class="result-head"><div><h2>发布包</h2><span id="count">等待生成</span></div><button class="btn secondary" id="copyAll">复制全部</button></div><div id="results" class="empty">输入热点并点击“生成搜索流”</div></section>
+  </div>
+</main><div id="toast" class="toast"></div>
+<script>
+const DEFAULT_ACCOUNTS=[];
+const HOOKS=['How is everyone making this {topic}? Here’s the full tutorial.','Everyone on my FYP is doing this {topic} trend. Here’s how.','Learn how to make this viral {topic} in seconds.','I made this {topic} with my own photo and it went viral.','Wait until the end to see this {topic} effect.','This {topic} looks complicated, but it’s actually one tap.','Don’t scroll past this {topic} tutorial.'];
+const DEDUP=[['🔍 + 🎧 + 💥','居中偏下','白字黑边','轻微缩放'],['🎬 + 🎧 + ✨','左下角','黄字红边','闪烁'],['⚡ + 🎯 + ✨','偏上','黄字黑边','闪烁'],['📸 + 🎵 + 💜','右上角','蓝字白边','轻微缩放'],['👀 + 🎶 + 💧','右下角','白字黑边','闪烁'],['⏰ + 💥 + 🇺🇸','左下角','红字白边','轻微缩放'],['🧠 + ✨ + 💚','居中偏上','黑字黄底','轻微缩放']];
+const LANG=['cómo hacer {topic}','como fazer {topic}','{topic} tutorial paso a paso'];
+let ACCOUNTS=loadAccounts(),selected=new Set(ACCOUNTS.map(a=>a[0])),last=[];
+const $=id=>document.getElementById(id);
+function loadAccounts(){try{const value=JSON.parse(localStorage.getItem('sf-accounts')||'null');if(Array.isArray(value)&&value.every(a=>Array.isArray(a)&&a.length===4))return value}catch{}return []}
+function persistAccounts(){localStorage.setItem('sf-accounts',JSON.stringify(ACCOUNTS))}
+function show(msg){$('toast').textContent=msg;$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),1800)}
+function renderAccounts(){$('accounts').className=ACCOUNTS.length?'account-list':'account-list empty';$('accounts').innerHTML=ACCOUNTS.length?ACCOUNTS.map(a=>`<div class="account-row"><button class="account ${selected.has(a[0])?'active':''}" data-id="${a[0]}">${esc(a[1])}<small>${esc(a[2])} · ${esc(a[3])}</small></button><button class="icon-btn" data-remove="${a[0]}" title="删除 ${esc(a[1])}" aria-label="删除 ${esc(a[1])}">×</button></div>`).join(''):'请先新增账号';document.querySelectorAll('.account').forEach(b=>b.onclick=()=>{let id=b.dataset.id;selected.has(id)?selected.delete(id):selected.add(id);b.classList.toggle('active')});document.querySelectorAll('[data-remove]').forEach(b=>b.onclick=()=>removeAccount(b.dataset.remove))}
+function addAccount(){const id=$('newAccountId').value.trim().toUpperCase().replace(/[^A-Z0-9_-]/g,''),name=$('newAccountName').value.trim(),tool=$('newAccountTool').value,time=$('newAccountTime').value.trim()||'按账号后台活跃时段';if(!id||!name){show('请输入账号 ID 和名称');return}if(ACCOUNTS.some(a=>a[0]===id)){show('账号 ID 已存在');return}ACCOUNTS.push([id,name,tool,time]);selected.add(id);persistAccounts();renderAccounts();$('newAccountId').value='';$('newAccountName').value='';$('newAccountTime').value='';show('账号已新增')}
+function removeAccount(id){const account=ACCOUNTS.find(a=>a[0]===id);if(!account||!confirm(`确定删除账号“${account[1]}”吗？`))return;ACCOUNTS=ACCOUNTS.filter(a=>a[0]!==id);selected.delete(id);persistAccounts();renderAccounts();show('账号已删除')}
+function clearAccounts(){if(!ACCOUNTS.length){show('当前没有账号');return}if(!confirm('确定清空当前浏览器里的全部账号吗？'))return;ACCOUNTS=[];selected.clear();persistAccounts();renderAccounts();show('账号已清空')}
+function clean(s){return s.trim().replace(/^[-•\d️⃣.\s]+/,'')}
+function build(){
+ const topic=$('topic').value.trim()||'viral edit', ip=$('ip').value.trim(), refs=$('refs').value.split(/\n|,/).map(clean).filter(Boolean), multi=$('multi').checked, mustTool=$('mustTool').checked, hash=$('hashtags').checked;
+ if(!selected.size){show('至少选择一个账号');return []}
+ let idx=0; const out=[];
+ selected.forEach(id=>{const a=ACCOUNTS.find(x=>x[0]===id), tool=a[2], lower=topic.toLowerCase(), hook=HOOKS[idx%HOOKS.length].replaceAll('{topic}',topic), ded=DEDUP[idx%DEDUP.length];
+   let terms=[...refs,`how to ${lower}`,`${lower} tutorial`,`${lower} trend`,`${lower} original`,`${lower} template`,`${lower} edit`,`${lower} filter`,`${lower} effect`];
+   if(ip) terms.push(`${ip} ${lower}`,`${lower} ${ip} edit`,`${ip} ${lower} tutorial`);
+   if(multi) terms.push(...LANG.map(x=>x.replaceAll('{topic}',lower)));
+   if(mustTool)terms.push(tool==='Kling AI'?`${lower} kling ai template`:`${lower} capcut template`,tool==='Kling AI'?'kling ai tutorial':'capcut pioneer',tool==='Kling AI'?'kling creators':'capcut edit tutorial');
+   terms=[...new Set(terms.map(x=>x.toLowerCase()))];
+   const tags=tool==='Kling AI'?['#KlingCreators','#KlingAI','#'+slug(topic),'#photoedit','#fyp']:['#capcut','#capcutpioneer','#'+slug(topic),'#'+(ip?slug(ip):'edit'),'#fyp'];
+   out.push({id,name:a[1],tool,schedule:a[3],hook,keywords:terms.join(' '),tags:hash?tags.join(' '):'',dedup:`${ded[0]} / ${ded[1]} / ${ded[2]} / ${ded[3]} / ${tool==='Kling AI'?'Kling 英式版配音':'CapCut 美式版配音'}`,voice:`How to make the viral ${topic} edit. It’s super easy and completely free. First, click here to copy the video link. Then tap the template link in the bottom left corner.`,comment:`Full ${tool} template here 👇 Drop a ${ded[0].split(' ')[0]} if you’re trying this ${topic} trend!`});idx++;
+ }); return out;
+}
+function slug(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,'').slice(0,24)||'trend'}
+function render(out){last=out;if(!out.length){$('results').className='empty';$('results').textContent='暂无结果';$('count').textContent='等待生成';return} $('count').textContent=`${out.length} 个账号 · 工具词、多语言与去重配置已覆盖`;$('results').className='cards';$('results').innerHTML=out.map((x,i)=>`<article class="card"><div class="card-top"><div><div class="account-name">${x.name} <span class="pill good">${x.id}</span></div><div class="tool">${x.tool} · ${x.schedule}</div></div><div class="mini-actions"><button class="mini" data-copy="${i}">复制本条</button></div></div><div class="section"><div class="section-title">钩子 + 搜索流</div><div class="copybox">${esc(x.hook)} ${esc(x.keywords)} ${esc(x.tags)}</div></div><div class="section"><div class="section-title">去重清单</div><div class="copybox">${esc(x.dedup)}</div></div><div class="section"><div class="section-title">配音文案</div><div class="copybox">${esc(x.voice)}</div></div><div class="section"><div class="section-title">置顶评论</div><div class="copybox">${esc(x.comment)}</div></div></article>`).join('');document.querySelectorAll('[data-copy]').forEach(b=>b.onclick=()=>copyOne(last[+b.dataset.copy]));saveHistory()}
+function esc(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
+function textOf(x){return `${x.name}（${x.tool}）\n\n${x.hook} ${x.keywords} ${x.tags}\n\n去重：${x.dedup}\n配音：${x.voice}\n置顶评论：${x.comment}\n发布时间：${x.schedule}`}
+async function copyOne(x){await navigator.clipboard.writeText(textOf(x));show('已复制 '+x.name+' 发布包')}
+async function copyAll(){if(!last.length){show('请先生成');return}await navigator.clipboard.writeText(last.map(textOf).join('\n\n──────────\n\n'));show('已复制全部发布包')}
+function saveHistory(){let h=JSON.parse(localStorage.getItem('sf-history')||'[]');h.unshift({topic:$('topic').value,at:new Date().toLocaleString(),count:last.length});localStorage.setItem('sf-history',JSON.stringify(h.slice(0,6)));renderHistory()}
+function renderHistory(){let h=JSON.parse(localStorage.getItem('sf-history')||'[]');$('historyList').className=h.length?'':'empty';$('historyList').innerHTML=h.length?h.map(x=>`<div class="history-row"><span>${esc(x.topic||'未命名')}</span><span>${x.count} 账号 · ${x.at}</span></div>`).join(''):'暂无记录'}
+$('generate').onclick=()=>render(build());$('copyAll').onclick=copyAll;$('all').onclick=()=>{selected=new Set(ACCOUNTS.map(a=>a[0]));renderAccounts()};$('addAccount').onclick=addAccount;$('clearAccounts').onclick=clearAccounts;$('clear').onclick=()=>{last=[];$('results').className='empty';$('results').textContent='输入热点并点击“生成搜索流”';$('count').textContent='等待生成'};renderAccounts();renderHistory();
+</script></body></html>
