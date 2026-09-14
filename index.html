@@ -6,72 +6,539 @@
   <title>TikTok 搜索流工坊</title>
   <style>
     :root{--bg:#10100f;--panel:#191917;--line:#393934;--text:#f8f7f1;--muted:#aaa99f;--coral:#ff6359;--mint:#61d69b;--yellow:#f4cf62}
-    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font:14px/1.55 Inter,system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif}
-    .wrap{max-width:1220px;margin:auto;padding:30px 22px 70px}.top{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:28px}.eyebrow{color:var(--mint);font-weight:700;letter-spacing:0;font-size:12px}.title{font-size:clamp(28px,4vw,46px);line-height:1.1;margin:7px 0 10px;letter-spacing:0}.sub{color:var(--muted);max-width:680px;margin:0}.badge{background:#22221f;border:1px solid #44443e;border-radius:99px;padding:8px 13px;color:#f0efe6;white-space:nowrap}.grid{display:grid;grid-template-columns:360px 1fr;gap:22px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 20px 55px rgba(0,0,0,.2)}.results-panel{padding:2px 0}.panel h2,.results-panel h2{font-size:16px;margin:0 0 14px}.field{margin:0 0 14px}.field label{display:block;color:#d4d3ca;font-size:12px;margin-bottom:6px;font-weight:700}.field input,.field textarea,.field select{width:100%;background:#11110f;border:1px solid #41413b;border-radius:6px;color:var(--text);padding:11px 12px;outline:none;font:inherit}.field textarea{resize:vertical;min-height:92px}.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--mint);box-shadow:0 0 0 3px #61d69b18}.account-list{display:flex;flex-wrap:wrap;gap:7px}.account{cursor:pointer;border:1px solid #45453e;background:#121210;color:#c3c2b8;border-radius:6px;padding:7px 9px;font-size:12px}.account.active{background:#254536;border-color:var(--mint);color:#fff}.account small{display:block;color:#8d8c82;font-size:10px}.checks{display:flex;flex-wrap:wrap;gap:8px}.checks label{font-size:12px;color:#d0cfc5;background:#121210;border:1px solid #3a3a35;padding:6px 8px;border-radius:6px}.checks input{accent-color:var(--coral)}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.btn{cursor:pointer;border:0;border-radius:6px;padding:10px 13px;font-weight:800;color:#102219;background:var(--mint)}.btn.secondary{background:#30302c;color:#f0efe9}.btn.pink{background:var(--coral);color:white}.result-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:13px}.result-head h2{margin:0}.result-head span{color:var(--muted);font-size:12px}.cards{display:grid;gap:13px}.card{border:1px solid #3b3b36;background:#181816;border-radius:8px;padding:15px}.card-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.account-name{font-weight:800;font-size:16px}.tool{color:var(--yellow);font-size:11px;margin-top:2px}.mini-actions{display:flex;gap:6px}.mini{border:1px solid #4b4b44;background:#282824;color:#f1f0e8;border-radius:6px;padding:6px 8px;cursor:pointer;font-size:11px}.section{margin-top:13px}.section-title{color:#aaa99f;font-size:11px;text-transform:uppercase;letter-spacing:0;margin-bottom:5px}.copybox{white-space:pre-wrap;background:#10100e;border:1px solid #30302c;border-radius:6px;padding:11px;color:#f0efe8;max-height:220px;overflow:auto}.pill{border-radius:99px;padding:4px 8px;background:#33332e;color:#dddcd2;font-size:11px}.pill.good{background:#17392a;color:#75e4ac}.empty{border:1px dashed #494942;border-radius:8px;padding:34px;text-align:center;color:var(--muted)}.history{margin-top:18px}.history-row{display:flex;justify-content:space-between;gap:10px;border-top:1px solid #363631;padding:9px 0;color:#c8c7bd;font-size:12px}.toast{position:fixed;right:20px;bottom:20px;background:#ecfdf5;color:#092c1d;border:1px solid #65e6a6;padding:10px 14px;border-radius:6px;box-shadow:0 10px 30px #0008;display:none;font-weight:700}.toast.show{display:block}
-    .account-list{display:grid;gap:7px}.account-row{display:flex;gap:6px}.account-row .account{flex:1;text-align:left}.icon-btn{width:34px;border:1px solid #45453e;background:#242420;color:#d8d7ce;border-radius:6px;cursor:pointer;font-size:18px}.icon-btn:hover{border-color:var(--coral);color:#fff}.account-admin{border-top:1px solid #363631;margin-top:12px;padding-top:12px}.account-form{display:grid;grid-template-columns:1fr 1fr;gap:7px}.account-form input,.account-form select{min-width:0;background:#11110f;border:1px solid #41413b;border-radius:6px;color:var(--text);padding:8px;font:inherit;font-size:12px}.account-form .wide{grid-column:1/-1}.account-note{color:#8d8c82;font-size:11px;margin:8px 0 0}.btn.small{padding:7px 10px;font-size:11px}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font:14px/1.55 Inter,system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif}
+    .wrap{max-width:1220px;margin:auto;padding:30px 22px 70px}
+    .top{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:28px}
+    .eyebrow{color:var(--mint);font-weight:700;letter-spacing:0;font-size:12px}
+    .title{font-size:clamp(28px,4vw,46px);line-height:1.1;margin:7px 0 10px;letter-spacing:0}
+    .sub{color:var(--muted);max-width:680px;margin:0}
+    .badge{background:#22221f;border:1px solid #44443e;border-radius:99px;padding:8px 13px;color:#f0efe6;white-space:nowrap}
+    .grid{display:grid;grid-template-columns:360px 1fr;gap:22px}
+    .panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:18px;box-shadow:0 20px 55px rgba(0,0,0,.2)}
+    .results-panel{padding:2px 0}
+    .panel h2,.results-panel h2{font-size:16px;margin:0 0 14px}
+    .field{margin:0 0 14px}
+    .field label{display:block;color:#d4d3ca;font-size:12px;margin-bottom:6px;font-weight:700}
+    .field input,.field textarea,.field select{width:100%;background:#11110f;border:1px solid #41413b;border-radius:6px;color:var(--text);padding:11px 12px;outline:none;font:inherit}
+    .field textarea{resize:vertical;min-height:92px}
+    .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--mint);box-shadow:0 0 0 3px #61d69b18}
+    .account-list{display:grid;gap:7px}
+    .account-list.empty{display:block;color:var(--muted)}
+    .account-row{display:flex;gap:6px}
+    .account{cursor:pointer;border:1px solid #45453e;background:#121210;color:#c3c2b8;border-radius:6px;padding:7px 9px;font-size:12px;flex:1;text-align:left}
+    .account.active{background:#254536;border-color:var(--mint);color:#fff}
+    .account small{display:block;color:#8d8c82;font-size:10px}
+    .icon-btn{width:34px;border:1px solid #45453e;background:#242420;color:#d8d7ce;border-radius:6px;cursor:pointer;font-size:18px}
+    .icon-btn:hover{border-color:var(--coral);color:#fff}
+    .account-admin{border-top:1px solid #363631;margin-top:12px;padding-top:12px}
+    .account-form{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+    .account-form input,.account-form select,.bulk-form textarea{min-width:0;background:#11110f;border:1px solid #41413b;border-radius:6px;color:var(--text);padding:8px;font:inherit;font-size:12px}
+    .account-form .wide{grid-column:1/-1}
+    .bulk-form{margin-top:10px}
+    .bulk-form textarea{width:100%;min-height:68px;resize:vertical}
+    .account-note{color:#8d8c82;font-size:11px;margin:8px 0 0}
+    .checks{display:flex;flex-wrap:wrap;gap:8px}
+    .checks label{font-size:12px;color:#d0cfc5;background:#121210;border:1px solid #3a3a35;padding:6px 8px;border-radius:6px}
+    .checks input{accent-color:var(--coral)}
+    .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+    .btn{cursor:pointer;border:0;border-radius:6px;padding:10px 13px;font-weight:800;color:#102219;background:var(--mint)}
+    .btn.secondary{background:#30302c;color:#f0efe9}
+    .btn.pink{background:var(--coral);color:white}
+    .btn.small{padding:7px 10px;font-size:11px}
+    .result-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:13px}
+    .result-head h2{margin:0}
+    .result-head span{color:var(--muted);font-size:12px}
+    .verify{margin:-4px 0 13px;color:#8d8c82;font-size:11px;line-height:1.7}
+    .verify b{color:var(--mint);font-weight:700}
+    .verify.low b{color:var(--yellow)}
+    .cards{display:grid;gap:13px}
+    .card{border:1px solid #3b3b36;background:#181816;border-radius:8px;padding:15px}
+    .card-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+    .account-name{font-weight:800;font-size:16px}
+    .tool{color:var(--yellow);font-size:11px;margin-top:2px}
+    .mini-actions{display:flex;gap:6px}
+    .mini{border:1px solid #4b4b44;background:#282824;color:#f1f0e8;border-radius:6px;padding:6px 8px;cursor:pointer;font-size:11px}
+    .section{margin-top:13px}
+    .section-title{color:#aaa99f;font-size:11px;text-transform:uppercase;letter-spacing:0;margin-bottom:5px}
+    .copybox{white-space:pre-wrap;background:#10100e;border:1px solid #30302c;border-radius:6px;padding:11px;color:#f0efe8;max-height:220px;overflow:auto}
+    .pill{border-radius:99px;padding:4px 8px;background:#33332e;color:#dddcd2;font-size:11px}
+    .pill.good{background:#17392a;color:#75e4ac}
+    .empty{border:1px dashed #494942;border-radius:8px;padding:34px;text-align:center;color:var(--muted)}
+    .history{margin-top:18px}
+    .history-row{width:100%;display:flex;justify-content:space-between;gap:10px;border:0;border-top:1px solid #363631;padding:9px 0;background:transparent;color:#c8c7bd;font:inherit;font-size:12px;text-align:left;cursor:pointer}
+    .history-row:hover{color:#fff;border-top-color:var(--mint)}
+    .history-row:focus-visible{outline:2px solid var(--mint);outline-offset:2px}
+    .history-meta{color:var(--muted);white-space:nowrap}
+    .toast{position:fixed;right:20px;bottom:20px;background:#ecfdf5;color:#092c1d;border:1px solid #65e6a6;padding:10px 14px;border-radius:6px;box-shadow:0 10px 30px #0008;display:none;font-weight:700}
+    .toast.show{display:block}
     @media(max-width:850px){.grid{grid-template-columns:1fr}.top{display:block}.badge{display:inline-block;margin-top:15px}}
   </style>
 </head>
 <body>
 <main class="wrap">
-  <header class="top"><div><div class="eyebrow">SEARCH FLOW STUDIO · LOCAL FIRST</div><h1 class="title">TikTok 爆款关键词搜索流</h1><p class="sub">把一个热点拆成多个账号可直接发布的差异化关键词包：搜索词、钩子、去重清单、配音和置顶评论一次生成。</p></div><div class="badge">账号数据只保存在本机</div></header>
+  <header class="top">
+    <div>
+      <div class="eyebrow">SEARCH FLOW STUDIO · LOCAL FIRST</div>
+      <h1 class="title">TikTok 爆款关键词搜索流</h1>
+      <p class="sub">把一个热点拆成多个账号可直接发布的差异化关键词包：搜索词、钩子、去重清单、配音和置顶评论一次生成。</p>
+    </div>
+    <div class="badge">账号数据只保存在本机</div>
+  </header>
   <div class="grid">
     <aside class="panel">
       <h2>生成配置</h2>
-      <div class="field"><label>热点 / 主题</label><input id="topic" value="Head Bop Animation" placeholder="例如：Chrome Flow Photo Effect" /></div>
-      <div class="field"><label>人物 / IP（可选）</label><input id="ip" value="iShowSpeed" placeholder="例如：Batman、Ava、Lamborghini" /></div>
-      <div class="field"><label>参考关键词（每行一个）</label><textarea id="refs">tutorial on head bop animation
-how to do head bop animation
-head bop tutorial capcut
-ishowspeed head bop edit
-head bop animation capcut tutorial
-how to make head bop animation in capcut</textarea></div>
-      <div class="field"><label>账号（点击选择）</label><div id="accounts" class="account-list empty">请先新增账号</div>
-        <div class="account-admin"><div class="account-form"><input id="newAccountId" maxlength="12" placeholder="账号 ID，如 A1" /><input id="newAccountName" placeholder="显示名称" /><select id="newAccountTool"><option>CapCut</option><option>Kling AI</option></select><input id="newAccountTime" class="wide" placeholder="发布时间，如北京时间 07:30" /></div><div class="actions"><button class="btn small" id="addAccount">＋ 新增账号</button><button class="btn secondary small" id="clearAccounts">清空账号</button></div><p class="account-note">账号只保存在当前浏览器，不上传服务器。每位同事维护自己的列表。</p></div>
+      <div class="field"><label>热点 / 主题</label><input id="topic" placeholder="例如：Chrome Flow Photo Effect" /></div>
+      <div class="field"><label>人物 / IP（可选）</label><input id="ip" placeholder="例如：Batman、Ava、Lamborghini" /></div>
+      <div class="field"><label>参考关键词（全部粘贴即可）</label><textarea id="refs" placeholder="可一次粘贴全部关键词，用逗号、分号或换行分隔"></textarea></div>
+      <div class="field"><label>账号（点击选择）</label>
+        <div id="accounts" class="account-list empty">请先新增账号</div>
+        <div class="account-admin">
+          <div class="account-form">
+            <input id="newAccountId" maxlength="12" placeholder="账号 ID，如 A1" />
+            <input id="newAccountName" placeholder="显示名称" />
+            <select id="newAccountTool"><option>CapCut</option><option>Kling AI</option></select>
+            <input id="newAccountTime" class="wide" placeholder="发布时间，如北京时间 07:30" />
+          </div>
+          <div class="actions"><button class="btn small" id="addAccount">＋ 新增账号</button><button class="btn secondary small" id="clearAccounts">清空账号</button></div>
+          <div class="bulk-form"><textarea id="bulkAccounts" placeholder="批量新增：每行一个，格式为 ID | 显示名称 | 工具 | 发布时间"></textarea><button class="btn secondary small" id="addBulkAccounts">批量新增账号</button></div>
+          <p class="account-note">账号只保存在当前浏览器，不上传服务器。每位同事维护自己的列表。</p>
+        </div>
       </div>
-      <div class="field"><label>强制覆盖词</label><div class="checks"><label><input id="multi" type="checkbox" checked /> 多语言变体</label><label><input id="mustTool" type="checkbox" checked /> 工具词</label><label><input id="hashtags" type="checkbox" checked /> 5 个标签</label></div></div>
+      <div class="field"><label>生成设置</label>
+        <div class="checks">
+          <label><input id="multi" type="checkbox" checked /> 多语言变体</label>
+          <label><input id="mustTool" type="checkbox" checked /> 工具词</label>
+          <label><input id="hashtags" type="checkbox" checked /> 话题标签</label>
+        </div>
+      </div>
+      <div class="field"><label>话题标签数量</label><input id="tagCount" type="number" min="1" max="12" value="5" /><p class="account-note">默认 5 个，可调整到 12 个，每个账号的标签组合都不一样。</p></div>
       <div class="actions"><button class="btn pink" id="generate">生成搜索流</button><button class="btn secondary" id="all">全选账号</button><button class="btn secondary" id="clear">清空结果</button></div>
       <div class="history"><h2>最近生成</h2><div id="historyList" class="empty">暂无记录</div></div>
     </aside>
-    <section class="results-panel"><div class="result-head"><div><h2>发布包</h2><span id="count">等待生成</span></div><button class="btn secondary" id="copyAll">复制全部</button></div><div id="results" class="empty">输入热点并点击“生成搜索流”</div></section>
+    <section class="results-panel">
+      <div class="result-head"><div><h2>发布包</h2><span id="count">等待生成</span></div><button class="btn secondary" id="copyAll">复制全部</button></div>
+      <div id="verify" class="verify"></div>
+      <div id="results" class="empty">输入热点并点击“生成搜索流”</div>
+    </section>
   </div>
-</main><div id="toast" class="toast"></div>
+</main>
+<div id="toast" class="toast"></div>
 <script>
 const DEFAULT_ACCOUNTS=[];
-const HOOKS=['How is everyone making this {topic}? Here’s the full tutorial.','Everyone on my FYP is doing this {topic} trend. Here’s how.','Learn how to make this viral {topic} in seconds.','I made this {topic} with my own photo and it went viral.','Wait until the end to see this {topic} effect.','This {topic} looks complicated, but it’s actually one tap.','Don’t scroll past this {topic} tutorial.'];
-const DEDUP=[['🔍 + 🎧 + 💥','居中偏下','白字黑边','轻微缩放'],['🎬 + 🎧 + ✨','左下角','黄字红边','闪烁'],['⚡ + 🎯 + ✨','偏上','黄字黑边','闪烁'],['📸 + 🎵 + 💜','右上角','蓝字白边','轻微缩放'],['👀 + 🎶 + 💧','右下角','白字黑边','闪烁'],['⏰ + 💥 + 🇺🇸','左下角','红字白边','轻微缩放'],['🧠 + ✨ + 💚','居中偏上','黑字黄底','轻微缩放']];
-const LANG=['cómo hacer {topic}','como fazer {topic}','{topic} tutorial paso a paso'];
+const HOOKS=[
+ 'How is everyone making this {topic}? Here is the full tutorial.',
+ 'Everyone on my FYP is doing this {topic} trend. Here is how.',
+ 'Learn how to make this viral {topic} in seconds.',
+ 'I made this {topic} with my own photo and it went viral.',
+ 'Wait until the end to see this {topic} effect.',
+ 'This {topic} looks complicated, but it is actually one tap.',
+ 'Do not scroll past this {topic} tutorial.',
+ 'This is the exact {topic} edit people keep asking about.',
+ 'Save this before the {topic} trend leaves your FYP.',
+ 'POV: you finally learn the {topic} effect everyone is using.',
+ 'My FYP is full of {topic}, so I tested the easiest method.',
+ 'Stop searching. This is how to recreate the {topic} trend.',
+ 'No one explains the {topic} template this clearly.',
+ 'I tested three ways to make {topic}; this one wins.',
+ 'If you like clean edits, try this {topic} tutorial.',
+ 'The trick behind this smooth {topic} effect is simpler than you think.',
+ 'You need to see how fast this {topic} edit comes together.',
+ 'Can someone explain why this {topic} is suddenly everywhere?',
+ 'I finally found a beginner-friendly {topic} workflow.',
+ 'Watch the last second to see the {topic} transformation.',
+ 'Quick guide: make the {topic} trend without complicated steps.',
+ 'Here is the copyable {topic} template I used today.',
+ 'Want the same result? Start with this {topic} edit.',
+ 'One idea, one template, and a viral-looking {topic} result.',
+ 'This {topic} edit broke my comment section. Here is the method.',
+ 'Nobody told me {topic} was this easy in {tool}.',
+ 'Three taps in {tool} and the {topic} effect is done.',
+ 'I almost gave up on {topic} until I tried this.',
+ 'The {topic} trend, explained in 20 seconds.',
+ 'Here is the {topic} template before it blows up.',
+ 'Still confused by {topic}? Start here.',
+ 'This {topic} tutorial is for anyone with zero editing skill.',
+ 'My comments are full of people asking for this {topic} template.',
+ 'Trying the {topic} trend on an old photo. The result surprised me.',
+ 'Every creator is doing {topic} wrong. Here is the clean way.',
+ 'Free {topic} template inside. Save it before it goes private.',
+ 'I remade the {topic} trend on my phone in under a minute.',
+ 'The {topic} effect everyone tags me in, finally explained.',
+ 'Give me 30 seconds and I will teach you {topic}.',
+ 'This {topic} edit looks expensive but costs nothing.',
+ 'Copy this {topic} workflow, then make it your own.',
+ 'Your FYP is about to be full of {topic}. Here is why.',
+ 'The easiest {topic} method for {tool}, step by step.',
+ 'I found the {topic} trend early. Do not miss it.',
+ 'Watch how this {topic} edit goes from boring to viral.',
+ 'If your {topic} edit looks flat, try this one change.',
+ 'Real talk: {topic} is easier than it looks.',
+ 'Save this {topic} tutorial for your next edit.',
+ 'This {topic} remix works for {ip} edits too.',
+ 'I used the same {topic} template for three different photos.',
+ 'The {topic} effect in {tool} is free, and here is the proof.',
+ 'Not another {topic} tutorial that skips the important part.',
+ 'Watch me recreate {topic} from scratch, no skills needed.',
+ 'The reason your {topic} edit looks off, and how to fix it.',
+ 'This {topic} trick gets me a fresh edit every single day.',
+ 'Trying {topic} for the first time, with the template everyone uses.',
+ 'Here is the fastest {topic} workflow I have found so far.',
+ 'If you only learn one {topic} method this week, make it this one.',
+ 'This {topic} edit is going straight into my saved templates.',
+ 'I broke down the {topic} trend into three simple steps.'
+];
+const DEDUP=[
+ ['🔍 + 🎧 + 💥','居中偏下','白字黑边','轻微缩放｜闪白过渡｜热门梦幻音频'],
+ ['🎬 + 🎧 + ✨','左下角','黄字红边','闪烁｜快速横移｜欧美流行卡点'],
+ ['⚡ + 🎯 + ✨','偏上','黄字黑边','闪烁｜定格卡点｜轻电子鼓点'],
+ ['📸 + 🎵 + 💜','右上角','蓝字白边','轻微缩放｜柔和溶解｜氛围弦乐'],
+ ['👀 + 🎶 + 💧','右下角','白字黑边','闪烁｜闪白过渡｜热门梦幻音频'],
+ ['⏰ + 💥 + 🇺🇸','左下角','红字白边','轻微缩放｜快速横移｜潮流说唱'],
+ ['🧠 + ✨ + 💚','居中偏上','黑字黄底','轻微缩放｜叠加溶解｜慢速回响'],
+ ['💫 + 🪩 + 🩵','右下偏上','白字蓝边','呼吸闪烁｜光晕过渡｜快节奏鼓组'],
+ ['🫧 + ⭐ + 💙','左上角','蓝字白边','慢速漂浮｜柔和溶解｜氛围弦乐'],
+ ['🌙 + ✨ + 🖤','居中','黄字黑边','柔和闪烁｜渐隐过渡｜慢速回响'],
+ ['❤️‍🔥 + 🎵 + 🤍','右下角','白字红边','节奏放大｜定格卡点｜欧美流行卡点'],
+ ['🧊 + ⚡ + 💛','左下偏中','黑字黄底','快速缩放｜快速横移｜轻电子鼓点'],
+ ['🌈 + 🎧 + 🩷','偏上居中','粉字白边','色彩闪变｜柔和溶解｜热门梦幻音频'],
+ ['☁️ + 💎 + 🤍','右上角','白字黑边','轻微上移｜渐隐过渡｜氛围弦乐'],
+ ['🪄 + 🎯 + 💜','居中偏上','紫字白边','星光闪烁｜光晕过渡｜快节奏鼓组'],
+ ['🧿 + 🔥 + 🩶','左侧居中','白字灰边','镜头抖动｜快速横移｜潮流说唱'],
+ ['🍀 + 🎶 + 💚','右侧居中','绿字白边','轻微弹跳｜定格卡点｜轻电子鼓点'],
+ ['🕶️ + 💥 + 🟡','左下角','黄字黑边','镜头推进｜闪白过渡｜欧美流行卡点'],
+ ['🦋 + ✨ + 🩵','右上偏中','蓝字白边','柔和漂移｜柔和溶解｜氛围弦乐'],
+ ['🎀 + 📸 + 🩷','居中偏下','粉字黑边','闪白过渡｜渐隐过渡｜热门梦幻音频'],
+ ['🌊 + 🎧 + 💙','下方居中','白字蓝边','波纹闪烁｜柔和溶解｜慢速回响'],
+ ['🪐 + ⭐ + 🟣','偏上居中','白字紫边','慢速旋转｜光晕过渡｜氛围弦乐'],
+ ['🌻 + 💫 + 💛','左上偏中','黑字黄底','轻微摇摆｜定格卡点｜轻电子鼓点'],
+ ['🛸 + ⚡ + 🩶','右下偏中','白字灰边','快速推近｜快速横移｜快节奏鼓组'],
+ ['🔮 + ✨ + 💜','右上偏下','紫字白边','粒子闪烁｜光晕过渡｜热门梦幻音频'],
+ ['🎯 + 🎵 + 🩶','左下偏上','黑字白边','节奏缩放｜定格卡点｜潮流说唱'],
+ ['🪞 + 💎 + 🤍','居中偏右','银字黑边','镜面滑动｜柔和溶解｜慢速回响'],
+ ['🌪️ + ⚡ + 🩵','偏下居中','白字蓝边','旋转推进｜快速横移｜轻电子鼓点'],
+ ['🔥 + 🎧 + ❤️','左侧偏下','红字白边','火焰闪烁｜闪白过渡｜欧美流行卡点'],
+ ['🐚 + 🫧 + 🩵','右侧偏上','蓝字白边','水波浮动｜渐隐过渡｜氛围弦乐'],
+ ['⭐ + 📸 + 🟡','居中偏上','黄字黑边','星光放大｜定格卡点｜热门梦幻音频'],
+ ['🫧 + 🎶 + 🩷','左下偏中','粉字白边','气泡上升｜柔和溶解｜慢速回响'],
+ ['🌌 + 💫 + 🟣','右下方','白字紫边','星空漂移｜光晕过渡｜氛围弦乐'],
+ ['🎬 + 💥 + 🤍','偏上偏右','白字黑边','闪切推进｜快速横移｜快节奏鼓组'],
+ ['🧿 + 🎵 + 🩵','居中偏下','蓝字黑边','镜头轻晃｜定格卡点｜轻电子鼓点'],
+ ['🍭 + ✨ + 🩷','左上偏下','粉字白边','弹跳缩放｜柔和溶解｜热门梦幻音频'],
+ ['🪩 + ⚡ + 🩶','右下偏上','银字黑边','光斑闪烁｜闪白过渡｜欧美流行卡点'],
+ ['🌠 + ⭐ + 💙','左侧偏上','白字蓝边','拖尾漂移｜渐隐过渡｜慢速回响'],
+ ['🎨 + 💫 + 💜','偏下偏左','紫字白边','色彩流动｜光晕过渡｜氛围弦乐'],
+ ['🛰️ + 🎧 + 🩶','右上偏下','白字灰边','快速推近｜快速横移｜潮流说唱']
+];
+const LANG=[
+ 'cómo hacer {topic}','como hacer {topic}','cómo editar {topic}','tutorial de {topic}',
+ 'efecto {topic} paso a paso','cómo hacer el efecto {topic}','{topic} tutorial paso a paso',
+ 'como fazer {topic}','como editar {topic}','tutorial de {topic} passo a passo',
+ 'efeito {topic} fácil','como fazer o efeito {topic}','{topic} tutorial passo a passo',
+ '{topic} editing guide','{topic} template tutorial','{topic} trend tutorial',
+ '{topic} effect tutorial','{topic} edit tutorial','{topic} tutorial en español',
+ '{topic} tutorial em português'
+];
+const ANGLES=[
+ 'beginner guide','fast workflow','step by step','easy method','mobile edit','creator hack',
+ 'before and after','clean edit','quick tutorial','template breakdown','for beginners','pro workflow',
+ 'one tap method','photo edit guide','viral remix','simple capcut edit','smooth transition','trend breakdown',
+ 'creator tutorial','advanced variation','no experience needed','fyp edit guide','original style','quick remake',
+ 'full walkthrough','easy tutorial','hidden feature','secret trick','zero editing skills','free template',
+ 'trend explained','photo transformation','fast tutorial','simple steps','editing basics','aesthetic edit',
+ 'smooth result','viral formula','copy this edit','master this effect','beginner friendly','quick method'
+];
+const VOICES=[
+ 'How to make the viral {topic} edit. It is super easy and completely free. First, click here to copy the video link, then tap the template link in the bottom left corner.',
+ 'This {topic} trend is everywhere right now. Open {tool}, pick your photo, and follow the same steps I use. Copy the link, tap the template, and you are done in seconds.',
+ '{topic} in under a minute. Tap the link, open {tool}, choose your picture, and let the template do the work. Save it before the trend moves on.',
+ 'Everyone keeps asking how I made this {topic} edit. Here is the full method. Copy the video link, open {tool}, and tap the template in the bottom left corner.',
+ 'Stop scrolling if you want the {topic} effect. Open {tool}, drop in your photo, apply the template, and export. That is the whole process.',
+ 'I tested the {topic} trend so you do not have to. The easiest way is {tool} plus the template link below. Three taps and it is finished.',
+ 'Want the exact {topic} look? Copy the link, open {tool}, pick the template, and adjust the timing until it matches your photo.',
+ 'This {topic} edit only needs one photo and one template. Open {tool}, paste the link, and export in seconds.',
+ 'Here is the beginner version of the {topic} trend. No editing experience needed. Just open {tool} and follow the template steps.',
+ 'The {topic} effect looks hard, but it is really just one template. Tap the link, open {tool}, and you will get the same result.',
+ 'Save this before the {topic} trend is gone. Copy the link, open {tool}, and use the template in the bottom left corner.',
+ 'Quick {topic} tutorial. Copy the video link, open {tool}, tap the template, and post. That is all it takes.',
+ 'This is the {topic} method I keep coming back to. Open {tool}, load your photo, apply the template, and let it render.',
+ 'My whole feed is asking about this {topic} edit. Here is the honest breakdown. Copy the link, open {tool}, and follow along.',
+ 'Beginner friendly {topic}. You only need {tool} and one photo. Tap the template link below and the effect applies itself.',
+ 'If your {topic} edit keeps looking wrong, this is the fix. Open {tool}, use the template, and match the timing to your clip.',
+ '{topic} without the confusion. Copy the video link, open {tool}, tap the template, then export and post.',
+ 'Here is the {topic} breakdown, step by step. Open {tool}, import your photo, apply the template, and you are finished.',
+ 'This {topic} edit took me one try with {tool}. Link is below, the template is free, and the result speaks for itself.',
+ 'Tired of {topic} tutorials that skip steps? This one shows everything. Open {tool}, copy the link, and follow the template.',
+ 'The {topic} trend, made simple. Tap the link, open {tool}, pick the template, and your first edit is ready to post.',
+ 'Save yourself the trial and error on {topic}. Use {tool} and the template below, then adjust the timing to taste.'
+];
+const COMMENTS=[
+ 'Full {tool} template here 👇 Drop a {emoji} if you are trying this {topic} trend!',
+ 'The {tool} template is linked below 👇 Comment {emoji} and I will send the steps!',
+ 'Everything you need is pinned 👇 Save this before the {topic} trend blows up {emoji}',
+ 'Template link below 👇 Tell me which photo you used {emoji}',
+ '{tool} template in the first comment 👇 Drop a {emoji} if it worked for you!',
+ 'Pinned the {tool} steps 👇 Comment {emoji} if you want the full tutorial!',
+ 'Full tutorial is pinned 👇 Drop {emoji} and I will reply with the template!',
+ 'Template and steps are below 👇 Try it and tag me {emoji}',
+ 'Save this post 👇 Comment {emoji} and I will share the {tool} template!',
+ 'The {tool} template is in the comments 👇 Drop a {emoji} if you are posting this!',
+ 'Follow for the full {topic} breakdown 👇 Comment {emoji} for the template!',
+ 'Steps are pinned 👇 Drop {emoji} and I will send the {tool} link!',
+ 'Template link below 👇 Comment {emoji} if you want part two!',
+ 'Pinned everything you need 👇 Drop a {emoji} when you post yours!',
+ 'Template is in the pinned comment 👇 Tell me your result {emoji}',
+ '{tool} steps are pinned 👇 Comment {emoji} and I will send the link!',
+ 'Everything is linked below 👇 Drop {emoji} if you are trying this tonight!',
+ 'Pinned the full {topic} method 👇 Comment {emoji} for the template!',
+ 'Template and audio are pinned 👇 Drop {emoji} if it worked for you!',
+ 'Save this for later 👇 Comment {emoji} and I will reply with the {tool} link!',
+ 'Full walkthrough is pinned 👇 Drop {emoji} and I will send the {tool} template!',
+ 'Link is in the first comment 👇 Comment {emoji} if you are posting this trend!'
+];
+const HISTORY_LIMIT=10;
+// Unique lead-in per account: index 0 of every output's keyword list, so the
+// first four search words never collide between accounts.
+const LEADS=[
+ 'how to make','how to do','how to create','how to edit','how to remake','how to get',
+ 'tutorial for','guide for','easy tutorial for','quick guide to','beginner guide to','full tutorial on',
+ 'easy method for','fast way to','simple steps for','step by step guide to','complete guide to','crash course on',
+ 'viral','trending','new','best','clean','aesthetic',
+ 'copy this','try this','learn this','master this','remake this','save this',
+ 'kling ai method for','capcut method for','ai edit for','photo edit for','template for','filter for',
+ 'effect tutorial for','trend tutorial for','original edit for','viral edit for','cinematic edit for','smooth edit for',
+ 'zero skill','no experience','one tap','phone only','free template for','hidden method for'
+];
 let ACCOUNTS=loadAccounts(),selected=new Set(ACCOUNTS.map(a=>a[0])),last=[];
 const $=id=>document.getElementById(id);
-function loadAccounts(){try{const value=JSON.parse(localStorage.getItem('sf-accounts')||'null');if(Array.isArray(value)&&value.every(a=>Array.isArray(a)&&a.length===4))return value}catch{}return []}
-function persistAccounts(){localStorage.setItem('sf-accounts',JSON.stringify(ACCOUNTS))}
+function loadAccounts(){
+  try{
+    const stored=localStorage.getItem('sf-accounts');
+    if(stored===null)return DEFAULT_ACCOUNTS.map(a=>[...a]);
+    const value=JSON.parse(stored);
+    if(Array.isArray(value)&&value.every(a=>Array.isArray(a)&&a.length===4)){
+      if(!value.length&&localStorage.getItem('sf-accounts-cleared')!=='1')return DEFAULT_ACCOUNTS.map(a=>[...a]);
+      return value;
+    }
+  }catch(e){}
+  return [];
+}
+function persistAccounts(){
+  localStorage.setItem('sf-accounts',JSON.stringify(ACCOUNTS));
+  if(ACCOUNTS.length)localStorage.removeItem('sf-accounts-cleared');
+  else localStorage.setItem('sf-accounts-cleared','1');
+}
 function show(msg){$('toast').textContent=msg;$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),1800)}
-function renderAccounts(){$('accounts').className=ACCOUNTS.length?'account-list':'account-list empty';$('accounts').innerHTML=ACCOUNTS.length?ACCOUNTS.map(a=>`<div class="account-row"><button class="account ${selected.has(a[0])?'active':''}" data-id="${a[0]}">${esc(a[1])}<small>${esc(a[2])} · ${esc(a[3])}</small></button><button class="icon-btn" data-remove="${a[0]}" title="删除 ${esc(a[1])}" aria-label="删除 ${esc(a[1])}">×</button></div>`).join(''):'请先新增账号';document.querySelectorAll('.account').forEach(b=>b.onclick=()=>{let id=b.dataset.id;selected.has(id)?selected.delete(id):selected.add(id);b.classList.toggle('active')});document.querySelectorAll('[data-remove]').forEach(b=>b.onclick=()=>removeAccount(b.dataset.remove))}
-function addAccount(){const id=$('newAccountId').value.trim().toUpperCase().replace(/[^A-Z0-9_-]/g,''),name=$('newAccountName').value.trim(),tool=$('newAccountTool').value,time=$('newAccountTime').value.trim()||'按账号后台活跃时段';if(!id||!name){show('请输入账号 ID 和名称');return}if(ACCOUNTS.some(a=>a[0]===id)){show('账号 ID 已存在');return}ACCOUNTS.push([id,name,tool,time]);selected.add(id);persistAccounts();renderAccounts();$('newAccountId').value='';$('newAccountName').value='';$('newAccountTime').value='';show('账号已新增')}
-function removeAccount(id){const account=ACCOUNTS.find(a=>a[0]===id);if(!account||!confirm(`确定删除账号“${account[1]}”吗？`))return;ACCOUNTS=ACCOUNTS.filter(a=>a[0]!==id);selected.delete(id);persistAccounts();renderAccounts();show('账号已删除')}
-function clearAccounts(){if(!ACCOUNTS.length){show('当前没有账号');return}if(!confirm('确定清空当前浏览器里的全部账号吗？'))return;ACCOUNTS=[];selected.clear();persistAccounts();renderAccounts();show('账号已清空')}
+function renderAccounts(){
+  $('accounts').className=ACCOUNTS.length?'account-list':'account-list empty';
+  $('accounts').innerHTML=ACCOUNTS.length?ACCOUNTS.map(a=>`<div class="account-row"><button class="account ${selected.has(a[0])?'active':''}" data-id="${esc(a[0])}">${esc(a[1])}<small>${esc(a[2])} · ${esc(a[3])}</small></button><button class="icon-btn" data-remove="${esc(a[0])}" title="删除 ${esc(a[1])}" aria-label="删除 ${esc(a[1])}">×</button></div>`).join(''):'请先新增账号';
+  document.querySelectorAll('.account').forEach(b=>b.onclick=()=>{let id=b.dataset.id;selected.has(id)?selected.delete(id):selected.add(id);b.classList.toggle('active')});
+  document.querySelectorAll('[data-remove]').forEach(b=>b.onclick=()=>removeAccount(b.dataset.remove));
+}
+function addAccount(){
+  const id=$('newAccountId').value.trim().toUpperCase().replace(/[^A-Z0-9_-]/g,''),name=$('newAccountName').value.trim(),tool=$('newAccountTool').value,time=$('newAccountTime').value.trim()||'按账号后台活跃时段';
+  if(!id||!name){show('请输入账号 ID 和名称');return}
+  if(ACCOUNTS.some(a=>a[0]===id)){show('账号 ID 已存在');return}
+  ACCOUNTS.push([id,name,tool,time]);selected.add(id);persistAccounts();renderAccounts();
+  $('newAccountId').value='';$('newAccountName').value='';$('newAccountTime').value='';show('账号已新增');
+}
+function addBulkAccounts(){
+  const rows=$('bulkAccounts').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+  if(!rows.length){show('请先粘贴批量账号');return}
+  let added=0;
+  rows.forEach(row=>{
+    const p=row.split(/\s*[|｜]\s*|\s*[,，]\s*/).map(x=>x.trim());
+    if(p.length<2)return;
+    const id=p[0].toUpperCase().replace(/[^A-Z0-9_-]/g,''),name=p[1],tool=/kling/i.test(p[2]||'')?'Kling AI':'CapCut',time=p[3]||'按账号后台活跃时段';
+    if(!id||!name||ACCOUNTS.some(a=>a[0]===id))return;
+    ACCOUNTS.push([id,name,tool,time]);selected.add(id);added++;
+  });
+  if(added){persistAccounts();renderAccounts();$('bulkAccounts').value='';show('已批量新增 '+added+' 个账号')}
+  else show('没有可新增的账号，请检查格式或重复 ID');
+}
+function removeAccount(id){
+  const account=ACCOUNTS.find(a=>a[0]===id);
+  if(!account||!confirm('确定删除账号“'+account[1]+'”吗？'))return;
+  ACCOUNTS=ACCOUNTS.filter(a=>a[0]!==id);selected.delete(id);persistAccounts();renderAccounts();show('账号已删除');
+}
+function clearAccounts(){
+  if(!ACCOUNTS.length){show('当前没有账号');return}
+  if(!confirm('确定清空当前浏览器里的全部账号吗？'))return;
+  ACCOUNTS=[];selected.clear();persistAccounts();renderAccounts();show('账号已清空');
+}
 function clean(s){return s.trim().replace(/^[-•\d️⃣.\s]+/,'')}
-function build(){
- const topic=$('topic').value.trim()||'viral edit', ip=$('ip').value.trim(), refs=$('refs').value.split(/\n|,/).map(clean).filter(Boolean), multi=$('multi').checked, mustTool=$('mustTool').checked, hash=$('hashtags').checked;
- if(!selected.size){show('至少选择一个账号');return []}
- let idx=0; const out=[];
- selected.forEach(id=>{const a=ACCOUNTS.find(x=>x[0]===id), tool=a[2], lower=topic.toLowerCase(), hook=HOOKS[idx%HOOKS.length].replaceAll('{topic}',topic), ded=DEDUP[idx%DEDUP.length];
-   let terms=[...refs,`how to ${lower}`,`${lower} tutorial`,`${lower} trend`,`${lower} original`,`${lower} template`,`${lower} edit`,`${lower} filter`,`${lower} effect`];
-   if(ip) terms.push(`${ip} ${lower}`,`${lower} ${ip} edit`,`${ip} ${lower} tutorial`);
-   if(multi) terms.push(...LANG.map(x=>x.replaceAll('{topic}',lower)));
-   if(mustTool)terms.push(tool==='Kling AI'?`${lower} kling ai template`:`${lower} capcut template`,tool==='Kling AI'?'kling ai tutorial':'capcut pioneer',tool==='Kling AI'?'kling creators':'capcut edit tutorial');
-   terms=[...new Set(terms.map(x=>x.toLowerCase()))];
-   const tags=tool==='Kling AI'?['#KlingCreators','#KlingAI','#'+slug(topic),'#photoedit','#fyp']:['#capcut','#capcutpioneer','#'+slug(topic),'#'+(ip?slug(ip):'edit'),'#fyp'];
-   out.push({id,name:a[1],tool,schedule:a[3],hook,keywords:terms.join(' '),tags:hash?tags.join(' '):'',dedup:`${ded[0]} / ${ded[1]} / ${ded[2]} / ${ded[3]} / ${tool==='Kling AI'?'Kling 英式版配音':'CapCut 美式版配音'}`,voice:`How to make the viral ${topic} edit. It’s super easy and completely free. First, click here to copy the video link. Then tap the template link in the bottom left corner.`,comment:`Full ${tool} template here 👇 Drop a ${ded[0].split(' ')[0]} if you’re trying this ${topic} trend!`});idx++;
- }); return out;
+function rotate(list,shift){if(!list.length)return list;const n=((shift%list.length)+list.length)%list.length;return list.slice(n).concat(list.slice(0,n))}
+function seededShuffle(list,seed){
+  const a=[...list];
+  let s=((seed+1)*2654435761)%4294967296;
+  for(let i=a.length-1;i>0;i--){
+    s=(s*1664525+1013904223)%4294967296;
+    const j=s%(i+1);
+    const tmp=a[i];a[i]=a[j];a[j]=tmp;
+  }
+  return a;
+}
+function topicVariants(topic){
+  const lower=topic.toLowerCase().trim();
+  const compact=lower.replace(/[^a-z0-9]+/g,'');
+  const dashed=lower.replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  const words=lower.split(/\s+/).filter(Boolean);
+  return [...new Set([lower,compact,dashed,words.reverse().join(' ')])].filter(Boolean);
+}
+function ipVariants(ip){
+  if(!ip)return [];
+  const lower=ip.toLowerCase().trim();
+  const compact=lower.replace(/[^a-z0-9]+/g,'');
+  const words=lower.split(/\s+/).filter(Boolean);
+  return [...new Set([lower,compact,words.reverse().join(' ')])].filter(Boolean);
 }
 function slug(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,'').slice(0,24)||'trend'}
-function render(out){last=out;if(!out.length){$('results').className='empty';$('results').textContent='暂无结果';$('count').textContent='等待生成';return} $('count').textContent=`${out.length} 个账号 · 工具词、多语言与去重配置已覆盖`;$('results').className='cards';$('results').innerHTML=out.map((x,i)=>`<article class="card"><div class="card-top"><div><div class="account-name">${x.name} <span class="pill good">${x.id}</span></div><div class="tool">${x.tool} · ${x.schedule}</div></div><div class="mini-actions"><button class="mini" data-copy="${i}">复制本条</button></div></div><div class="section"><div class="section-title">钩子 + 搜索流</div><div class="copybox">${esc(x.hook)} ${esc(x.keywords)} ${esc(x.tags)}</div></div><div class="section"><div class="section-title">去重清单</div><div class="copybox">${esc(x.dedup)}</div></div><div class="section"><div class="section-title">配音文案</div><div class="copybox">${esc(x.voice)}</div></div><div class="section"><div class="section-title">置顶评论</div><div class="copybox">${esc(x.comment)}</div></div></article>`).join('');document.querySelectorAll('[data-copy]').forEach(b=>b.onclick=()=>copyOne(last[+b.dataset.copy]));saveHistory()}
-function esc(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
-function textOf(x){return `${x.name}（${x.tool}）\n\n${x.hook} ${x.keywords} ${x.tags}\n\n去重：${x.dedup}\n配音：${x.voice}\n置顶评论：${x.comment}\n发布时间：${x.schedule}`}
+function emojiOf(combo){return (combo.split(' ')[0]||'✨')}
+
+// Pure generator: the same input always produces the same pack, and each account
+// gets its own hook, sticker set, keyword order, hashtag mix, voice and caption.
+function generatePack(cfg){
+  const topic=(cfg.topic||'viral edit').trim();
+  const ip=(cfg.ip||'').trim();
+  const topicLower=topic.toLowerCase();
+  const topicForms=topicVariants(topic);
+  const ipForms=ipVariants(ip);
+  const topicSlug=slug(topic);
+  const accounts=cfg.accounts||[];
+  const out=[];
+  accounts.forEach((a,idx)=>{
+    const id=a[0],tool=a[2]||'CapCut',kling=/kling/i.test(tool),toolShort=kling?'kling ai':'capcut';
+    const toolForms=kling
+      ?['kling ai template','kling ai tutorial','kling creators','kling ai edit','kling ai effect','kling ai filter','kling ai trend']
+      :['capcut template','capcut tutorial','capcut pioneer','capcut edit','capcut effect','capcut filter','capcut trend'];
+    const seed=idx*97+13;
+    let hookText=HOOKS[idx%HOOKS.length]
+      .replaceAll('{topic}',topic)
+      .replaceAll('{tool}',tool)
+      .replaceAll('{ip}',ip||'this edit');
+    const round=Math.floor(idx/HOOKS.length);
+    if(round>0)hookText=hookText.replace(/[.?!]$/,'')+', part '+(round+1)+'.';
+    const ded=DEDUP[idx%DEDUP.length];
+    const angle=ANGLES[(idx*7)%ANGLES.length];
+    let terms=[...cfg.refs];
+    topicForms.forEach(v=>{
+      terms.push(
+        `how to ${v}`,`how to make ${v}`,`how to do ${v}`,`${v} tutorial`,`${v} ${toolShort} tutorial`,
+        `${v} trend`,`${v} original`,`${v} template`,`${v} edit`,`${v} filter`,`${v} effect`,
+        `${v} challenge`,`${v} ai edit`,`${v} step by step`,`${v} for beginners`
+      );
+    });
+    if(ipForms.length)ipForms.forEach(person=>topicForms.slice(0,3).forEach(v=>terms.push(`${person} ${v}`,`${v} ${person}`,`${person} ${v} edit`,`${person} ${v} tutorial`)));
+    if(cfg.multi){
+      LANG.forEach(x=>terms.push(x.replaceAll('{topic}',topicLower)));
+      rotate(LANG,(idx*3)%LANG.length).slice(0,7).forEach(x=>terms.push(x.replaceAll('{topic}',topicForms[(idx+1)%topicForms.length])));
+    }
+    if(cfg.mustTool){
+      toolForms.forEach(x=>terms.push(`${topicLower} ${x}`,x,`${x} for ${topicLower}`));
+      terms.push(`${topicLower} ${angle}`,`${angle} ${topicLower}`,`how to ${angle}`,`${toolShort} ${angle}`);
+    }
+    terms=[...new Set(terms.map(x=>x.toLowerCase().replace(/\s+/g,' ').trim()).filter(Boolean))];
+    terms=rotate(seededShuffle(terms,seed),idx*5);
+    const lead=(LEADS[idx%LEADS.length]+' '+topicLower).replace(/\s+/g,' ').trim();
+    terms=[lead,...terms.filter(t=>t!==lead)];
+    const coreTags=kling?['#klingai','#klingcreators']:['#capcut','#capcuttemplate'];
+    const poolTags=kling
+      ?['#kling','#klingtutorial','#klingtemplate','#klingaiedit','#aivideo','#aiphoto','#photoedit','#aiedit','#viralaiedit','#klingfilter']
+      :['#capcutpioneer','#capcuttutorial','#capcutedit','#capcuteffect','#capcutfilter','#capcutphoto','#videoedit','#editing','#photoedit','#edittutorial'];
+    let tagList=[];
+    if(cfg.hash){
+      const extra=[...new Set([...poolTags,'#'+topicSlug,ip?('#'+slug(ip)):'','#'+topicSlug+'trend','#viraledit','#fyp','#foryou','#viral','#trending','#tutorial','#'+slug(angle)].filter(Boolean))];
+      const target=Math.max(1,cfg.tagCount||5);
+      tagList=[...coreTags.slice(0,Math.min(target,coreTags.length)),...seededShuffle(extra,seed+41)].slice(0,target);
+    }
+    const voice=VOICES[idx%VOICES.length].replaceAll('{topic}',topic).replaceAll('{tool}',tool);
+    const comment=COMMENTS[idx%COMMENTS.length].replaceAll('{tool}',tool).replaceAll('{topic}',topic).replaceAll('{emoji}',emojiOf(ded[0]));
+    out.push({
+      id,
+      name:a[1],
+      tool,
+      schedule:a[3],
+      hook:hookText,
+      keywords:terms.join(' '),
+      tags:tagList.join(' '),
+      dedup:ded.join(' / ')+(kling?' / Kling 英式版配音':' / CapCut 美式版配音'),
+      voice,
+      comment
+    });
+  });
+  return out;
+}
+function build(){
+  if(!selected.size){show('至少选择一个账号');return []}
+  let tagCount=parseInt($('tagCount').value,10);
+  if(!Number.isFinite(tagCount))tagCount=5;
+  tagCount=Math.max(1,Math.min(12,tagCount));
+  const cfg={
+    topic:$('topic').value.trim(),
+    ip:$('ip').value.trim(),
+    refs:$('refs').value.split(/[\n,，;；、|]+/).map(clean).filter(Boolean),
+    multi:$('multi').checked,
+    mustTool:$('mustTool').checked,
+    hash:$('hashtags').checked,
+    tagCount,
+    accounts:ACCOUNTS.filter(a=>selected.has(a[0]))
+  };
+  return generatePack(cfg);
+}
+function uniqueness(out){
+  const uniq=key=>new Set(out.map(key)).size;
+  return {
+    total:out.length,
+    hook:uniq(x=>x.hook),
+    tags:uniq(x=>x.tags),
+    opening:uniq(x=>x.keywords.split(' ').slice(0,4).join(' ')),
+    dedup:uniq(x=>x.dedup),
+    voice:uniq(x=>x.voice),
+    comment:uniq(x=>x.comment)
+  };
+}
+function render(out,save=true){
+  last=out;
+  if(!out.length){$('results').className='empty';$('results').textContent='暂无结果';$('count').textContent='等待生成';$('verify').textContent='';return}
+  const u=uniqueness(out);
+  $('count').textContent=u.total+' 个账号 · 搜索词/钩子/去重已生成';
+  const perfect=u.hook===u.total&&u.tags===u.total&&u.opening===u.total&&u.dedup===u.total&&u.voice===u.total;
+  $('verify').className='verify'+(perfect?'':' low');
+  $('verify').innerHTML='去重校验：钩子 <b>'+u.hook+'/'+u.total+'</b> · 话题标签 <b>'+u.tags+'/'+u.total+'</b> · 开头词序 <b>'+u.opening+'/'+u.total+'</b> · 贴纸特效 <b>'+u.dedup+'/'+u.total+'</b> · 配音 <b>'+u.voice+'/'+u.total+'</b> · 评论 <b>'+u.comment+'/'+u.total+'</b>';
+  $('results').className='cards';
+  $('results').innerHTML=out.map((x,i)=>`<article class="card"><div class="card-top"><div><div class="account-name">${esc(x.name)} <span class="pill good">${esc(x.id)}</span></div><div class="tool">${esc(x.tool)} · ${esc(x.schedule)}</div></div><div class="mini-actions"><button class="mini" data-copy="${i}">复制本条</button></div></div><div class="section"><div class="section-title">钩子 + 搜索流</div><div class="copybox">${esc(x.hook)} ${esc(x.keywords)} ${esc(x.tags)}</div></div><div class="section"><div class="section-title">去重清单</div><div class="copybox">${esc(x.dedup)}</div></div><div class="section"><div class="section-title">配音文案</div><div class="copybox">${esc(x.voice)}</div></div><div class="section"><div class="section-title">置顶评论</div><div class="copybox">${esc(x.comment)}</div></div></article>`).join('');
+  document.querySelectorAll('[data-copy]').forEach(b=>b.onclick=()=>copyOne(last[+b.dataset.copy]));
+  if(save)saveHistory();
+}
+function esc(s){return String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
+function textOf(x){return `${x.name}（${x.id}｜${x.tool}）\n\n${x.hook} ${x.keywords} ${x.tags}\n\n去重：${x.dedup}\n配音：${x.voice}\n置顶评论：${x.comment}\n发布时间：${x.schedule}`}
 async function copyOne(x){await navigator.clipboard.writeText(textOf(x));show('已复制 '+x.name+' 发布包')}
 async function copyAll(){if(!last.length){show('请先生成');return}await navigator.clipboard.writeText(last.map(textOf).join('\n\n──────────\n\n'));show('已复制全部发布包')}
-function saveHistory(){let h=JSON.parse(localStorage.getItem('sf-history')||'[]');h.unshift({topic:$('topic').value,at:new Date().toLocaleString(),count:last.length});localStorage.setItem('sf-history',JSON.stringify(h.slice(0,6)));renderHistory()}
-function renderHistory(){let h=JSON.parse(localStorage.getItem('sf-history')||'[]');$('historyList').className=h.length?'':'empty';$('historyList').innerHTML=h.length?h.map(x=>`<div class="history-row"><span>${esc(x.topic||'未命名')}</span><span>${x.count} 账号 · ${x.at}</span></div>`).join(''):'暂无记录'}
-$('generate').onclick=()=>render(build());$('copyAll').onclick=copyAll;$('all').onclick=()=>{selected=new Set(ACCOUNTS.map(a=>a[0]));renderAccounts()};$('addAccount').onclick=addAccount;$('clearAccounts').onclick=clearAccounts;$('clear').onclick=()=>{last=[];$('results').className='empty';$('results').textContent='输入热点并点击“生成搜索流”';$('count').textContent='等待生成'};renderAccounts();renderHistory();
+function saveHistory(){
+  let h=JSON.parse(localStorage.getItem('sf-history')||'[]');
+  h.unshift({topic:$('topic').value,at:new Date().toLocaleString(),count:last.length,outputs:last});
+  localStorage.setItem('sf-history',JSON.stringify(h.slice(0,HISTORY_LIMIT)));
+  renderHistory();
+}
+function renderHistory(){
+  let h=JSON.parse(localStorage.getItem('sf-history')||'[]');
+  $('historyList').className=h.length?'':'empty';
+  $('historyList').innerHTML=h.length?h.map((x,i)=>`<button class="history-row" data-history="${i}"><span>${esc(x.topic||'未命名')} · ${x.count||0} 个账号</span><span class="history-meta">${x.outputs&&x.outputs.length?'查看内容':'仅主题记录'} · ${esc(x.at)}</span></button>`).join(''):'暂无记录';
+  document.querySelectorAll('[data-history]').forEach(b=>b.onclick=()=>openHistory(+b.dataset.history));
+}
+function openHistory(index){
+  const h=JSON.parse(localStorage.getItem('sf-history')||'[]'),entry=h[index];
+  if(!entry||!entry.outputs||!entry.outputs.length){show('这条是旧记录，没有保存生成内容');return}
+  if(entry.topic)$('topic').value=entry.topic;
+  render(entry.outputs,false);show('已打开历史发布包');
+}
+$('generate').onclick=()=>render(build());
+$('copyAll').onclick=copyAll;
+$('all').onclick=()=>{selected=new Set(ACCOUNTS.map(a=>a[0]));renderAccounts()};
+$('addAccount').onclick=addAccount;
+$('addBulkAccounts').onclick=addBulkAccounts;
+$('clearAccounts').onclick=clearAccounts;
+$('clear').onclick=()=>{last=[];$('results').className='empty';$('results').textContent='输入热点并点击“生成搜索流”';$('count').textContent='等待生成';$('verify').textContent='';$('verify').className='verify'};
+renderAccounts();
+renderHistory();
 </script></body></html>
